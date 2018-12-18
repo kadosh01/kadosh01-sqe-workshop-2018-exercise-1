@@ -46,9 +46,9 @@ describe('The javascript parser', () => {
     it('is parsing a simple function statement correctly', () => {
         assert.equal(
             JSON.stringify(parse_exp(parseCode('function binarySearch(X, V, n){\n'+
-            'let low, high, mid;\n'+
-            'low = 0;\n' +
-            'return low ;\n' + '}'))),
+                'let low, high, mid;\n'+
+                'low = 0;\n' +
+                'return low ;\n' + '}'))),
             '[{"line":1,"type":"FunctionDeclaration","name":"binarySearch","condition":null,"value":null},{"line":1,"type":"Identifier","name":"X","condition":null,"value":null},{"line":1,"type":"Identifier","name":"V","condition":null,"value":null},{"line":1,"type":"Identifier","name":"n","condition":null,"value":null},{"line":2,"type":"VariableDeclarator","name":"low","condition":null,"value":null},{"line":2,"type":"VariableDeclarator","name":"high","condition":null,"value":null},{"line":2,"type":"VariableDeclarator","name":"mid","condition":null,"value":null},{"line":3,"type":"AssignmentExpression","name":"low","condition":null,"value":"0"},{"line":4,"type":"ReturnStatement","name":null,"condition":null,"value":"low"}]'
         );
     });
@@ -56,7 +56,7 @@ describe('The javascript parser', () => {
     it('is parsing a simple if without else statement correctly', () => {
         assert.equal(
             JSON.stringify(parse_exp(parseCode('if (i>0) mid=0;'))),
-            '[{"line":1,"type":"IfStatement","name":null,"condition":"i>0","value":null},{"line":1,"type":"AssignmentExpression","name":"mid","condition":null,"value":"0"},null]'
+            '[{"line":1,"type":"IfStatement","name":null,"condition":"i>0","value":null},{"line":1,"type":"AssignmentExpression","name":"mid","condition":null,"value":"0"}]'
         );
     });
 

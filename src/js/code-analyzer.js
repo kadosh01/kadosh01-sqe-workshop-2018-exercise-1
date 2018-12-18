@@ -14,15 +14,15 @@ function parseCode(codeToParse) {
 const expConstructor = (line,type,name,condition,value)=> {return {line:line,type:type,name:name,condition:condition,value:value};};
 
 const parse_exp = (JsonCode) =>{
-    var functionsPointers = [parse_program,parse_FunctionDeclaration,parse_Identifier,parse_VariableDeclaration,parse_VariableDeclarator,parse_ExpressionStatement,parse_WhileStatement,parse_IfStatement,parse_ReturnStatement,parse_AssignmentExpression,parse_ForStatement];
-    var functionType = ['Program','FunctionDeclaration','Identifier','VariableDeclaration','VariableDeclarator','ExpressionStatement','WhileStatement','IfStatement','ReturnStatement','AssignmentExpression','ForStatement'];
+    var functionsPointers = [parse_BlockStatement,parse_program,parse_FunctionDeclaration,parse_Identifier,parse_VariableDeclaration,parse_VariableDeclarator,parse_ExpressionStatement,parse_WhileStatement,parse_IfStatement,parse_ReturnStatement,parse_AssignmentExpression,parse_ForStatement];
+    var functionType = ['BlockStatement','Program','FunctionDeclaration','Identifier','VariableDeclaration','VariableDeclarator','ExpressionStatement','WhileStatement','IfStatement','ReturnStatement','AssignmentExpression','ForStatement'];
     var index = functionType.indexOf(JsonCode.type);
     return functionsPointers[index](JsonCode);
 };
 
 
 const getStatement=(start,end,source)=>{
-    return source.slice( start, end);
+    return source.substring(start, end);
 };
 
 
@@ -34,7 +34,7 @@ const parse_program = (object) => {
 const parse_ForStatement = (object) =>{
     var line = object.loc.start.line;
     var init = parse_exp(object.init);
-    var test=object.test.string;
+    var test= object.test.string;
     var type = object.type;
     var update = parse_exp(object.update);
     var body = parse_BlockStatement(object.body);
@@ -53,8 +53,8 @@ const parse_IfStatement = (object) =>{
     var line = object.loc.start.line;
     var type = object.type ;
     var test = object.test.string;
-    var consequent = parse_exp(object.consequent);
-    var alt = object.alternate == null ? null : parse_exp(object.alternate);
+    var consequent =  parse_exp(object.consequent) ;
+    var alt = object.alternate  ?  parse_exp(object.alternate):[];
     return (([expConstructor(line,type,null,test,null)].concat(consequent)).concat(alt));
 };
 
@@ -75,7 +75,7 @@ const parse_ExpressionStatement = (object) =>{
 const parse_AssignmentExpression = (object) =>{
     var line = object.loc.start.line;
     var type = object.type;
-    var name = object.left.name;
+    var name = object.left.string;
     var val = object.right.string;
     return [expConstructor(line,type,name,null,val)] ;
 };
